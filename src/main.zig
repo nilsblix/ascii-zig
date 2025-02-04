@@ -1,8 +1,6 @@
 const std = @import("std");
 const psystem = @import("ascii.zig");
 
-//ansi escape codes
-
 pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     const allocator = gpa.allocator();

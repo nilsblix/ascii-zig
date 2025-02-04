@@ -41,7 +41,6 @@ const Particle = struct {
 
         x = @max(0, @min(width - 1e-4, x));
 
-        // const lifetime = rand2 * max_lifetime;
         const lifetime = (self.x - std.math.floor(self.x)) * max_lifetime;
         self.x = x;
         self.y = 0;
@@ -90,8 +89,6 @@ pub const System = struct {
             const numb = fi * std.math.pi;
             const dec = numb - std.math.floor(numb);
             const particle = Particle.init(-1, -1, dec * ParticleParams.particle_lifetime);
-            // _ = dec;
-            // const particle = Particle.init(-1, -1, 0);
             try particles.append(particle);
         }
 

@@ -34,7 +34,7 @@ const Particle = struct {
         self.lifetime += ParticleParams.dt;
         self.vel_x += 0.01 * self.y * (System.WIDTH / 2 - self.x);
         // self.vel_y += ParticleParams.acc * ParticleParams.dt;
-        self.vel_y += 0.001 * (System.HEIGHT / 2 - self.y);
+        self.vel_y += 0.01 * (System.HEIGHT / 2 - self.y);
         self.x += self.vel_x * ParticleParams.dt;
         self.y += self.vel_y * ParticleParams.dt;
     }
@@ -42,7 +42,7 @@ const Particle = struct {
     pub fn reset(self: *Self, rand1: f32, rand2: f32, stdev: f32, width: f32, max_lifetime: f32) void {
         const pi = std.math.pi;
         const z0 = @sqrt(-2.0 * std.math.log(f32, rand1, std.math.e)) * std.math.cos(2.0 * pi * rand2);
-        var x = (width / 2) + z0 * stdev;
+        var x = (width / 4) + z0 * stdev;
 
         x = @max(0, @min(width - 1e-4, x));
 
@@ -55,7 +55,7 @@ const Particle = struct {
     }
 };
 
-const Ascii = struct {
+pub const Ascii = struct {
     const characters: []const u8 = " .:!|||}]%&#";
     const err = error{index_out_of_range};
     const Self = @This();
@@ -75,6 +75,8 @@ pub const System = struct {
 
     const WIDTH = 116;
     const HEIGHT = 30;
+    // const WIDTH = 400;
+    // const HEIGHT = 40;
 
     const Self = @This();
     pub fn init(alloc: Allocator, stdev: f32, max_num_particles: u32) !Self {

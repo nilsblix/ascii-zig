@@ -15,7 +15,8 @@ pub const ParticleParams = struct {
 const Particle = struct {
     x: f32,
     y: f32,
-    vel: f32,
+    vel_x: f32,
+    vel_y: f32,
     lifetime: f32,
 
     const Self = @This();
@@ -23,15 +24,19 @@ const Particle = struct {
         return .{
             .x = x,
             .y = y,
-            .vel = 0,
+            .vel_x = 0,
+            .vel_y = 0,
             .lifetime = lifetime,
         };
     }
 
     pub fn move(self: *Self) void {
         self.lifetime += ParticleParams.dt;
-        self.vel += ParticleParams.acc * ParticleParams.dt;
-        self.y += self.vel * ParticleParams.dt;
+        self.vel_x += 0.01 * self.y * (System.WIDTH / 2 - self.x);
+        // self.vel_y += ParticleParams.acc * ParticleParams.dt;
+        self.vel_y += 0.001 * (System.HEIGHT / 2 - self.y);
+        self.x += self.vel_x * ParticleParams.dt;
+        self.y += self.vel_y * ParticleParams.dt;
     }
 
     pub fn reset(self: *Self, rand1: f32, rand2: f32, stdev: f32, width: f32, max_lifetime: f32) void {
@@ -45,12 +50,13 @@ const Particle = struct {
         self.x = x;
         self.y = 0;
         self.lifetime = lifetime;
-        self.vel = 5 * rand2;
+        self.vel_x = 0;
+        self.vel_y = 5 * rand2;
     }
 };
 
 const Ascii = struct {
-    const characters: []const u8 = " .:!|}]%&#";
+    const characters: []const u8 = " .:!|||}]%&#";
     const err = error{index_out_of_range};
     const Self = @This();
 

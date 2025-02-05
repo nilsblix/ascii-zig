@@ -14,7 +14,7 @@ pub fn main() !void {
 
     while (true) {
         try state.update();
-        std.debug.print("\x1B[2J\x1B[H", .{});
+        // std.debug.print("\x1B[2J\x1B[H", .{});
 
         try state.display();
         // seconds

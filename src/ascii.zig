@@ -50,13 +50,13 @@ const Particle = struct {
         self.x = x;
         self.y = 0;
         self.lifetime = lifetime;
-        self.vel_x = 0;
+        self.vel_x = 20 * rand2;
         self.vel_y = 5 * rand2;
     }
 };
 
 pub const Ascii = struct {
-    const characters: []const u8 = " .:!|||}]%&#";
+    const characters: []const u8 = " .,:;!|}]%&#@";
     const err = error{index_out_of_range};
     const Self = @This();
 
@@ -69,7 +69,7 @@ pub const Ascii = struct {
 pub const System = struct {
     particles: std.ArrayList(Particle),
     params: ParticleParams,
-    values: [System.WIDTH][System.HEIGHT]u8,
+    values: [System.WIDTH][System.HEIGHT]u32,
 
     num_reseted: u32,
 
@@ -84,7 +84,7 @@ pub const System = struct {
 
         const nx = Self.WIDTH;
         const ny = Self.HEIGHT;
-        var values: [nx][ny]u8 = undefined;
+        var values: [nx][ny]u32 = undefined;
         for (0..nx) |x| {
             for (0..ny) |y| {
                 values[x][y] = 0;
@@ -117,7 +117,7 @@ pub const System = struct {
 
         const nx = Self.WIDTH;
         const ny = Self.HEIGHT;
-        var values: [nx][ny]u8 = undefined;
+        var values: [nx][ny]u32 = undefined;
         for (0..nx) |x| {
             for (0..ny) |y| {
                 values[x][y] = 0;

@@ -39,10 +39,11 @@ const Particle = struct {
         self.y += self.vel_y * ParticleParams.dt;
     }
 
-    pub fn reset(self: *Self, rand1: f32, rand2: f32, stdev: f32, width: f32, max_lifetime: f32) void {
+    pub fn reset(self: *Self, rand1: f32, rand2: f32, stdev: f32, width: f32, max_lifetime: f32, inc: u32) void {
         const pi = std.math.pi;
         const z0 = @sqrt(-2.0 * std.math.log(f32, rand1, std.math.e)) * std.math.cos(2.0 * pi * rand2);
-        var x = (width / 4) + z0 * stdev;
+        const f_inc: f32 = @floatFromInt(inc);
+        var x = f_inc + z0 * stdev;
 
         x = @max(0, @min(width - 1e-4, x));
 
@@ -70,6 +71,7 @@ pub const System = struct {
     particles: std.ArrayList(Particle),
     params: ParticleParams,
     values: [System.WIDTH][System.HEIGHT]u32,
+    inc: u32,
 
     num_reseted: u32,
 
@@ -105,6 +107,7 @@ pub const System = struct {
             .params = params,
             .values = values,
             .num_reseted = 0,
+            .inc = 0,
         };
     }
 
@@ -114,6 +117,7 @@ pub const System = struct {
 
     pub fn update(self: *Self) !void {
         self.num_reseted = 0;
+        self.inc = @mod(self.inc + 1, System.WIDTH);
 
         const nx = Self.WIDTH;
         const ny = Self.HEIGHT;
@@ -140,7 +144,7 @@ pub const System = struct {
                 outside = p.x < 0 or p.x >= Self.WIDTH or p.y < 0 or p.y >= Self.HEIGHT;
                 const r1 = rand.float(f32);
                 const r2: f32 = @floatCast(rand.float(f64));
-                p.reset(r1, r2, self.params.spawn_stdev, Self.WIDTH, ParticleParams.particle_lifetime);
+                p.reset(r1, r2, self.params.spawn_stdev, Self.WIDTH, ParticleParams.particle_lifetime, self.inc);
 
                 self.num_reseted += 1;
             }

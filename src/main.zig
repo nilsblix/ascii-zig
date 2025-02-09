@@ -19,6 +19,6 @@ pub fn main() !void {
         try state.display();
         // seconds
         const T: f32 = 1 / psystem.ParticleParams.hz;
-        std.Thread.sleep(T * 1e9);
+        std.time.sleep(T * 1e9);
     }
 }

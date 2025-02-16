@@ -3,8 +3,8 @@ const print = std.debug.print;
 const Allocator = std.mem.Allocator;
 
 pub const ParticleParams = struct {
-    pub const acc: f32 = 3.0;
-    pub const hz: f32 = 30;
+    pub const acc: f32 = 4.0;
+    pub const hz: f32 = 60;
     pub const dt: f32 = 1 / hz;
     pub const particle_lifetime: f32 = 5.0;
 
@@ -57,7 +57,8 @@ const Particle = struct {
 };
 
 pub const Ascii = struct {
-    const characters: []const u8 = " .,:;!|}]%&#@";
+    // const characters: []const u8 = " .,:;!|}]%&#@";
+    const characters: []const u8 = "  .::;==??##@";
     const err = error{index_out_of_range};
     const Self = @This();
 
